@@ -1,0 +1,23 @@
+{
+  "name": "fabric-traceability-api",
+  "version": "1.0.0",
+  "description": "REST API Server for Export-Import Traceability using Hyperledger Fabric SDK 2.2.x",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "enrollAdmin": "node scripts/enrollAdmin.js",
+    "registerUser": "node scripts/registerUser.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "fabric-ca-client": "^2.2.19",
+    "fabric-network": "^2.2.19"
+  },
+  "engines": {
+    "node": ">=12.0.0 <17.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
