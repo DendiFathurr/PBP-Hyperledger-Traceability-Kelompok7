@@ -1,7 +1,7 @@
 {
   "name": "ekspor-barang-chaincode",
   "version": "1.0.0",
-  "description": "Chaincode Logistik Ekspor Impor Kelompok 6",
+  "description": "Chaincode Logistik Ekspor Impor Kelompok 7",
   "main": "index.js",
   "engines": {
     "node": ">=18"
@@ -12,6 +12,6 @@
   "dependencies": {
     "fabric-contract-api": "^2.5.4"
   },
-  "author": "Kelompok 6",
+  "author": "Kelompok 7",
   "license": "Apache-2.0"
 }

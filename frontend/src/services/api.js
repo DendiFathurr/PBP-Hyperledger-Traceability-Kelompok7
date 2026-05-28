@@ -275,10 +275,13 @@ export const containerService = {
         currentContainer.owner = payload.newOwner;
         currentContainer.status = payload.status;
         
+        // Pisahkan data history agar tidak terjadi circular reference saat serialization
+        const { history: _, ...containerDataWithoutHistory } = currentContainer;
+        
         currentContainer.history.push({
           txId: txId,
           value: {
-            ...currentContainer,
+            ...containerDataWithoutHistory,
             owner: payload.newOwner,
             status: payload.status,
             origin: currentContainer.origin,
@@ -308,11 +311,14 @@ export const containerService = {
       currentContainer.owner = payload.newOwner;
       currentContainer.status = payload.status;
       
+      // Pisahkan data history agar tidak terjadi circular reference saat serialization
+      const { history: _, ...containerDataWithoutHistory } = currentContainer;
+      
       // Tambahkan history baru
       currentContainer.history.push({
         txId: txId,
         value: {
-          ...currentContainer,
+          ...containerDataWithoutHistory,
           owner: payload.newOwner,
           status: payload.status,
           origin: currentContainer.origin,
