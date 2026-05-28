@@ -1,0 +1,23 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: logistik.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: Org1Eksportir
+    Domain: org1eksportir.logistik.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
+  - Name: Org2Importir
+    Domain: org2importir.logistik.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1

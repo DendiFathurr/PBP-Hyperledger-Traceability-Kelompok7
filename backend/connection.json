@@ -1,8 +1,8 @@
 {
-  "name": "test-network-org1",
+  "name": "logistik-network-org1eksportir",
   "version": "1.0.0",
   "client": {
-    "organization": "Org1",
+    "organization": "Org1Eksportir",
     "connection": {
       "timeout": {
         "peer": {
@@ -12,32 +12,32 @@
     }
   },
   "organizations": {
-    "Org1": {
-      "mspid": "Org1MSP",
+    "Org1Eksportir": {
+      "mspid": "Org1EksportirMSP",
       "peers": [
-        "peer0.org1.example.com"
+        "peer0.org1eksportir.logistik.com"
       ],
       "certificateAuthorities": [
-        "ca.org1.example.com"
+        "ca.org1eksportir.logistik.com"
       ]
     }
   },
   "peers": {
-    "peer0.org1.example.com": {
+    "peer0.org1eksportir.logistik.com": {
       "url": "grpcs://localhost:7051",
       "tlsCACerts": {
         "pem": "-----BEGIN CERTIFICATE-----\n<INSERT_PEER_CA_CERT_HERE>\n-----END CERTIFICATE-----\n"
       },
       "grpcOptions": {
-        "ssl-target-name-override": "peer0.org1.example.com",
-        "hostnameOverride": "peer0.org1.example.com"
+        "ssl-target-name-override": "peer0.org1eksportir.logistik.com",
+        "hostnameOverride": "peer0.org1eksportir.logistik.com"
       }
     }
   },
   "certificateAuthorities": {
-    "ca.org1.example.com": {
+    "ca.org1eksportir.logistik.com": {
       "url": "https://localhost:7054",
-      "caName": "ca-org1",
+      "caName": "ca-org1eksportir",
       "tlsCACerts": {
         "pem": ["-----BEGIN CERTIFICATE-----\n<INSERT_CA_CERT_HERE>\n-----END CERTIFICATE-----\n"]
       },

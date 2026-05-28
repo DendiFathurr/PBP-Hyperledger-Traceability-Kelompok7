@@ -1,0 +1,169 @@
+################################################################################
+#
+#   ORGANISASI (ORGANIZATIONS)
+#
+################################################################################
+Organizations:
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/logistik.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+
+  - &Org1Eksportir
+    Name: Org1Eksportir
+    ID: Org1EksportirMSP
+    MSPDir: crypto-config/peerOrganizations/org1eksportir.logistik.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('Org1EksportirMSP.admin', 'Org1EksportirMSP.peer', 'Org1EksportirMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('Org1EksportirMSP.admin', 'Org1EksportirMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('Org1EksportirMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('Org1EksportirMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.org1eksportir.logistik.com
+        Port: 7051
+
+  - &Org2Importir
+    Name: Org2Importir
+    ID: Org2ImportirMSP
+    MSPDir: crypto-config/peerOrganizations/org2importir.logistik.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('Org2ImportirMSP.admin', 'Org2ImportirMSP.peer', 'Org2ImportirMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('Org2ImportirMSP.admin', 'Org2ImportirMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('Org2ImportirMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('Org2ImportirMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.org2importir.logistik.com
+        Port: 9051
+
+################################################################################
+#
+#   KAPABILITAS (CAPABILITIES)
+#
+################################################################################
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+################################################################################
+#
+#   PROFIL KONFIGURASI (PROFILES)
+#
+################################################################################
+Profiles:
+  TwoOrgsOrdererGenesis:
+    Capabilities:
+      <<: *ChannelCapabilities
+    Policies:
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+    Orderer:
+      OrdererType: etcdraft
+      Addresses:
+        - orderer.logistik.com:7050
+      EtcdRaft:
+        Consenters:
+          - Host: orderer.logistik.com
+            Port: 7050
+            ClientTLSCert: crypto-config/ordererOrganizations/logistik.com/orderers/orderer.logistik.com/tls/server.crt
+            ServerTLSCert: crypto-config/ordererOrganizations/logistik.com/orderers/orderer.logistik.com/tls/server.crt
+      BatchTimeout: 2s
+      BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+      Policies:
+        Readers:
+          Type: ImplicitMeta
+          Rule: "ANY Readers"
+        Writers:
+          Type: ImplicitMeta
+          Rule: "ANY Writers"
+        Admins:
+          Type: ImplicitMeta
+          Rule: "MAJORITY Admins"
+        BlockValidation:
+          Type: ImplicitMeta
+          Rule: "ANY Writers"
+    Consortiums:
+      LogistikConsortium:
+        Organizations:
+          - *Org1Eksportir
+          - *Org2Importir
+
+  TwoOrgsChannel:
+    Consortium: LogistikConsortium
+    Capabilities:
+      <<: *ChannelCapabilities
+    Policies:
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+    Application:
+      Organizations:
+        - *Org1Eksportir
+        - *Org2Importir
+      Capabilities:
+        <<: *ApplicationCapabilities
+      Policies:
+        Readers:
+          Type: ImplicitMeta
+          Rule: "ANY Readers"
+        Writers:
+          Type: ImplicitMeta
+          Rule: "ANY Writers"
+        Admins:
+          Type: ImplicitMeta
+          Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+          Type: ImplicitMeta
+          Rule: "MAJORITY Endorsement"
+        Endorsement:
+          Type: ImplicitMeta
+          Rule: "MAJORITY Endorsement"
